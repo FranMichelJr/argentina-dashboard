@@ -1015,44 +1015,43 @@ corr = _build_corr(df_ipc, df_of, df_blue, df_sal, p_start, p_end)
 if corr is None:
     st.info("No hay suficientes datos superpuestos para calcular correlaciones en este período.")
 else:
-    labels = corr.columns.tolist()
-    z      = corr.values.tolist()
-    text   = [[f"{v:.2f}" for v in row] for row in z]
+    try:
+        import plotly.express as px
+        fig = px.imshow(
+            corr,
+            color_continuous_scale=[[0.0, C_RED], [0.5, "#21262d"], [1.0, C_BLUE]],
+            zmin=-1, zmax=1,
+            text_auto=".2f",
+        )
+        fig.update_layout(
+            title=dict(text="Correlación entre indicadores (variaciones mensuales %)",
+                       font=dict(color=C_TEXT, size=18,
+                                 family="Inter,system-ui,Arial,sans-serif"),
+                       x=0.0, xanchor="left"),
+            plot_bgcolor=C_SURFACE, paper_bgcolor=C_BG,
+            font=dict(color=C_TEXT, size=13),
+            coloraxis_colorbar=dict(
+                title="r",
+                tickfont=dict(color=C_MUTED),
+                titlefont=dict(color=C_MUTED),
+            ),
+            xaxis=dict(showgrid=False, linecolor=C_BORDER, tickfont=dict(color=C_TEXT)),
+            yaxis=dict(showgrid=False, linecolor=C_BORDER, tickfont=dict(color=C_TEXT)),
+            margin=dict(l=60, r=40, t=70, b=60),
+            height=380,
+        )
+        st.plotly_chart(fig, use_container_width=True)
+    except Exception:
+        # Fallback: styled dataframe when px.imshow is unavailable
+        styled = (
+            corr.style
+            .format("{:.2f}")
+            .background_gradient(cmap="RdBu", vmin=-1, vmax=1)
+        )
+        st.dataframe(styled, use_container_width=True)
 
-    fig = go.Figure(go.Heatmap(
-        z=z, x=labels, y=labels, text=text,
-        texttemplate="%{text}",
-        colorscale=[
-            [0.0,  C_RED],
-            [0.5,  C_SURFACE],
-            [1.0,  C_BLUE],
-        ],
-        zmid=0, zmin=-1, zmax=1,
-        colorbar=dict(
-            title="r", tickfont=dict(color=C_MUTED),
-            titlefont=dict(color=C_MUTED),
-            outlinecolor=C_BORDER, outlinewidth=1,
-        ),
-        hovertemplate="%{y} × %{x}: <b>%{text}</b><extra></extra>",
-    ))
-    fig.update_layout(
-        title=dict(text="Correlación entre indicadores (variaciones mensuales %)",
-                   font=dict(color=C_TEXT, size=18,
-                             family="Inter,system-ui,Arial,sans-serif"),
-                   x=0.0, xanchor="left"),
-        plot_bgcolor=C_SURFACE, paper_bgcolor=C_BG,
-        font=dict(color=C_MUTED, size=13),
-        xaxis=dict(showgrid=False, linecolor=C_BORDER, tickfont=dict(color=C_TEXT)),
-        yaxis=dict(showgrid=False, linecolor=C_BORDER, tickfont=dict(color=C_TEXT),
-                   autorange="reversed"),
-        margin=dict(l=60, r=40, t=70, b=60),
-        height=380,
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-    if corr is not None:
-        download_btn(corr.reset_index().rename(columns={"index": "indicador"}),
-                     "correlaciones.csv")
+    download_btn(corr.reset_index().rename(columns={"index": "indicador"}),
+                 "correlaciones.csv")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # FOOTER

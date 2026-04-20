@@ -6,7 +6,8 @@
       "Bash(pip install *)",
       "Bash(python -c ' *)",
       "Bash(python scripts/search.py \"fintech analytics dashboard dark professional\" --design-system -p \"Argentina Dashboard\")",
-      "Bash(python scripts/search.py \"kpi card metric sticky header sidebar filter\" --domain ux -n 4)"
+      "Bash(python scripts/search.py \"kpi card metric sticky header sidebar filter\" --domain ux -n 4)",
+      "Bash(python *)"
     ]
   }
 }
