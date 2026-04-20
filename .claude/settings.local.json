@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/franm/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"economic data dashboard fintech dark mode Argentina\" --design-system -p \"Argentina Dashboard\")",
+      "Bash(pip install *)",
+      "Bash(python -c ' *)",
+      "Bash(python scripts/search.py \"fintech analytics dashboard dark professional\" --design-system -p \"Argentina Dashboard\")",
+      "Bash(python scripts/search.py \"kpi card metric sticky header sidebar filter\" --domain ux -n 4)"
+    ]
+  }
+}
