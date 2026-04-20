@@ -1042,13 +1042,7 @@ else:
         )
         st.plotly_chart(fig, use_container_width=True)
     except Exception:
-        # Fallback: styled dataframe when px.imshow is unavailable
-        styled = (
-            corr.style
-            .format("{:.2f}")
-            .background_gradient(cmap="RdBu", vmin=-1, vmax=1)
-        )
-        st.dataframe(styled, use_container_width=True)
+        st.dataframe(corr.round(2), use_container_width=True)
 
     download_btn(corr.reset_index().rename(columns={"index": "indicador"}),
                  "correlaciones.csv")
