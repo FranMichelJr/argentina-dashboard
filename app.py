@@ -630,6 +630,7 @@ with st.spinner("Descargando datos de fuentes oficiales…"):
 # STICKY HEADER
 # ─────────────────────────────────────────────────────────────────────────────
 
+st.markdown("<div style='padding-top:1.5rem'></div>", unsafe_allow_html=True)
 st.markdown(
     f'<div class="sticky-hdr">'
     f'<h1>Dashboard Económico Argentina</h1>'
